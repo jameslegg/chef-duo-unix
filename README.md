@@ -5,6 +5,10 @@ Installs Duo Unix 2-factor authentication. Currently tested (barely) on Debian 7
 Requirements
 ============
 
+## Cookbooks
+
+* Opscode [OpenSSH](https://github.com/opscode-cookbooks/openssh) cookbook
+
 ## Platform:
 
 * Debian/Ubuntu
