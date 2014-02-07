@@ -27,7 +27,7 @@ when "debian", "ubuntu"
 	end
 end
 
-#install duo_unix from source
+# Install duo_unix from source
 configure_options = node['duo_unix']['configure_options'].join(" ")
 version = node['duo_unix']['version']
 remote_file "#{Chef::Config[:file_cache_path]}/duo_unix-#{version}.tar.gz" do
@@ -45,7 +45,7 @@ bash "build-and-install-duo_unix" do
   EOF
 end
 
-#set up the config file
+# Set up the config file
 template "/etc/duo/login_duo.conf" do
   source "login_duo.conf.erb"
   mode 0600
@@ -53,8 +53,8 @@ template "/etc/duo/login_duo.conf" do
   group "root"
 end
 
-#enable login_duo for ssh
-if node['duo_unix']['conf']['login_duo_enabled'] 
+# Enable login_duo for ssh
+if node['duo_unix']['conf']['login_duo_enabled']
 	bash "require login_duo for ssh" do
 		code <<-WTAF
 		grep -q 'ForceCommand /usr/sbin/login_duo' /etc/ssh/sshd_config || echo 'ForceCommand /usr/sbin/login_duo' >> /etc/ssh/sshd_config
@@ -68,37 +68,15 @@ else
 	end
 end
 
-#hacky way of editing the sshd_config file to add or remove lines
-if node['duo_unix']['conf']['PermitTunnel'] 
-	bash "remove permit tunnel no" do
-		code <<-WTAF
-		sed -i '\#PermitTunnel no#d' /etc/ssh/sshd_config
-		WTAF
-	end
+# Set sshd_config variables by overrding openssh cookbook variables
+if node['duo_unix']['conf']['PermitTunnel']
+    node.override['openssh']['server']['permit_tunnel'] = 'yes'
 else
-	bash "add permit tunnel no" do
-		code <<-WTAF
-		grep -q 'PermitTunnel no' /etc/ssh/sshd_config || echo 'PermitTunnel no' >> /etc/ssh/sshd_config
-		WTAF
-	end
+    node.override['openssh']['server']['permit_tunnel'] = 'no'
 end
 
-if node['duo_unix']['conf']['AllowTcpForwarding'] 
-	bash "remove AllowTcpForwarding no" do
-		code <<-WTAF
-		sed -i '\#AllowTcpForwarding no#d' /etc/ssh/sshd_config
-		WTAF
-	end
+if node['duo_unix']['conf']['AllowTcpForwarding']
+    node.override['openssh']['server']['allow_tcp_forwarding'] = 'no'
 else
-	bash "add AllowTcpForwarding no" do
-		code <<-WTAF
-		grep -q 'AllowTcpForwarding no' /etc/ssh/sshd_config || echo 'AllowTcpForwarding no' >> /etc/ssh/sshd_config
-		WTAF
-	end
+    node.override['openssh']['server']['allow_tcp_forwarding'] = 'yes'
 end
-
-#restart the sshd process so the next login will be duo protected
-bash "restart sshd process" do
-	code "kill -HUP `cat /var/run/sshd.pid`"
-end
-
