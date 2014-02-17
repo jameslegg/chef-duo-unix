@@ -24,8 +24,11 @@ describe "SSH Daemon" do
     expect(file('/etc/ssh/sshd_config')).to contain('AllowTcpForwarding no')
   end
 
-  it "should diable ssh Tunnelling" do
+  it "should disable ssh Tunnelling" do
     expect(file('/etc/ssh/sshd_config')).to contain('PermitTunnel no')
   end
 
+  it "should enable login_duo ForceCommand in sshd_config" do
+    expect(file('/etc/ssh/sshd_config')).to contain('ForceCommand /usr/sbin/login_duo')
+  end
 end

@@ -22,4 +22,5 @@ suites:
         conf:
           PermitTunnel: true
           AllowTCPForwarding: true
+          login_duo_enabled: false
 

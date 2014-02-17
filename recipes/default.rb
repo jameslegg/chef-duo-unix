@@ -56,17 +56,7 @@ end
 
 # Enable login_duo for ssh
 if node['duo_unix']['conf']['login_duo_enabled']
-	bash "require login_duo for ssh" do
-		code <<-WTAF
-		grep -q 'ForceCommand /usr/sbin/login_duo' /etc/ssh/sshd_config || echo 'ForceCommand /usr/sbin/login_duo' >> /etc/ssh/sshd_config
-		WTAF
-	end
-else
-	bash "disable login_duo for ssh" do
-		code <<-WTAF
-		sed -i '\#ForceCommand /usr/sbin/login_duo#d' /etc/ssh/sshd_config
-		WTAF
-	end
+    node.override['openssh']['server']['force_command'] = '/usr/sbin/login_duo'
 end
 
 # Set sshd_config variables by overrding openssh cookbook variables

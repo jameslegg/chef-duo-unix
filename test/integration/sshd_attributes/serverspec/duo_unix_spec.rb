@@ -28,4 +28,7 @@ describe "SSH Daemon" do
     expect(file('/etc/ssh/sshd_config')).to contain('PermitTunnel yes')
   end
 
+  it "should not enable ForceCommand sshd option" do
+    expect(file('/etc/ssh/sshd_config')).not_to contain('ForceCommand')
+  end
 end
