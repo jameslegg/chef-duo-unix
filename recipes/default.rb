@@ -76,8 +76,8 @@ else
     node.override['openssh']['server']['permit_tunnel'] = 'no'
 end
 
-if node['duo_unix']['conf']['AllowTcpForwarding']
-    node.override['openssh']['server']['allow_tcp_forwarding'] = 'no'
-else
+if node['duo_unix']['conf']['AllowTCPForwarding']
     node.override['openssh']['server']['allow_tcp_forwarding'] = 'yes'
+else
+    node.override['openssh']['server']['allow_tcp_forwarding'] = 'no'
 end
