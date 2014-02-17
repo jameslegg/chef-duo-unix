@@ -2,6 +2,12 @@ Description
 ===========
 Installs Duo Unix 2-factor authentication. Currently tested (barely) on Debian 7.0 x32, Ubuntu 12.04 x32 Server, Ubuntu 12.10 x32 Server
 
+Where available this cookbook installs from Duo Security's pre built apt repository on Ubuntu/Debian. Otherwise it will build from source.
+
+Using the OpenSSH cookbook to manage ssh configuration means that only the sshd attributes defined in this cookbook or elsewhere will will end up in sshd_config. This can cause unexpected behaviour.
+
+This cookbook uses Test Kitchen to run ServerSpec tests.
+
 Requirements
 ============
 
@@ -22,6 +28,10 @@ Minimum requirements for this recipe are:
 * `node['duo_unix']['conf']['integration_key']` - Your Duo Unix integration key
 * `node['duo_unix']['conf']['secret_key']` - Your Duo Unix integration secret key
 * `node['duo_unix']['conf']['api_hostname']` - Your Duo Unix integration api hostname
+
+To force the recipe to build from source set:
+
+* `node['duo_unix']['from_source'] = true`
 
 Usage
 =====
