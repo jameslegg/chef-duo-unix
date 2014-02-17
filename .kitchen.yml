@@ -14,7 +14,7 @@ suites:
     run_list:
       - recipe[duo_unix::default]
     attributes:
-  - name: sshd_attributes
+  - name: attributes
     run_list:
       - recipe[duo_unix::default]
     attributes:
