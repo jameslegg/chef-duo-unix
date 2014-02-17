@@ -7,9 +7,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,6 +35,7 @@ remote_file "#{Chef::Config[:file_cache_path]}/duo_unix-#{version}.tar.gz" do
   source "#{node['duo_unix']['url']}#{version}.tar.gz"
   checksum node['duo_unix']['checksum']
   mode "0644"
+  notifies :run, "bash[build-and-install-duo_unix]"
 end
 
 bash "build-and-install-duo_unix" do
@@ -44,9 +45,12 @@ bash "build-and-install-duo_unix" do
   (cd duo_unix-#{version} && ./configure #{configure_options})
   (cd duo_unix-#{version} && make && make install)
   EOF
+  # Only build when notified that a file has been re-downloaded
+  action :nothing
 end
 
 # Set up the config file
+directory "/etc/duo"
 template "/etc/duo/login_duo.conf" do
   source "login_duo.conf.erb"
   mode 0600
