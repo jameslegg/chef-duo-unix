@@ -31,10 +31,6 @@ describe "SSH Daemon" do
   it "should not enable ForceCommand sshd option" do
     expect(file('/etc/ssh/sshd_config')).not_to contain('ForceCommand')
   end
-
-  it "should install the duo_unix package" do
-    expect(package('duo-unix')).to be_installed
-  end
 end
 
 describe "Duo Unix install" do
