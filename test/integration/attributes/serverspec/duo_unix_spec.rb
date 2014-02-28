@@ -35,5 +35,46 @@ describe "SSH Daemon" do
   it "should install the duo_unix package" do
     expect(package('duo-unix')).to be_installed
   end
+end
 
+describe "Duo Unix install" do
+  it "should install the duo_unix package" do
+    expect(package('duo-unix')).to be_installed
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    it { should be_file }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("group=duousers") }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/ikey=\w+/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/ikey=\w+/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/host=api.\w+/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("pushinfo=yes") }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("autopush=yes") }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("group=duousers") }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("failmode=secure") }
+  end
 end

@@ -8,6 +8,9 @@ provisioner:
 platforms:
   - name: ubuntu-12.04
 
+busser:
+    sudo: true
+
 suites:
   - name: default
     run_list:
@@ -19,9 +22,16 @@ suites:
     attributes:
       duo_unix:
         conf:
+          secret_key: 'fakeskeyvalue123'
+          integration_key: 'fakeikeyvalue456'
+          api_hostname: 'api.duounixhost.test'
           PermitTunnel: true
           AllowTCPForwarding: true
           login_duo_enabled: false
+          pushinfo: 'yes'
+          failmode: 'secure'
+          autopush: true
+          group: 'duousers'
   - name: fromsource
     run_list:
       - recipe[duo_unix::default]
