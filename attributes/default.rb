@@ -16,6 +16,7 @@ default['duo_unix']['conf']['integration_key'] = ''
 default['duo_unix']['conf']['secret_key'] = ''
 default['duo_unix']['conf']['api_hostname'] = ''
 default['duo_unix']['conf']['pushinfo'] = 'no'
+default['duo_unix']['conf']['autopush'] = false
 default['duo_unix']['conf']['group'] = ''
 default['duo_unix']['conf']['failmode'] = 'safe'
 default['duo_unix']['conf']['PermitTunnel'] = false
