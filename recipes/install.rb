@@ -10,18 +10,20 @@ else
   when 'debian', 'ubuntu'
     lsb_codename = node['lsb']['codename']
     platform = node['platform']
-    if node['duo_unix'][platform][lsb_codename]['repo_url']
-      apt_repository "duosecurity" do
-        uri node['duo_unix'][platform][lsb_codename]['repo_url']
-        distribution lsb_codename
-        components ['main']
-        key node['duo_unix'][platform][lsb_codename]['repo_gpg']
+    if node['duo_unix'][platform][lsb_codename]
+      if node['duo_unix'][platform][lsb_codename]['repo_url']
+        apt_repository "duosecurity" do
+          uri node['duo_unix'][platform][lsb_codename]['repo_url']
+          distribution lsb_codename
+          components ['main']
+          key node['duo_unix'][platform][lsb_codename]['repo_gpg']
+        end
+        package "duo-unix"
+      else
+        # If no supported repo defined this release install from source
+        include_recipe 'duo_unix::source'
       end
-
-      package "duo-unix"
-
     else
-      # If no supported pkg for this release install from source
       include_recipe 'duo_unix::source'
     end
   else

@@ -16,6 +16,10 @@ end
 
 # Install duo_unix from source
 configure_options = node['duo_unix']['configure_options'].join(" ")
+if node['duo_unix']['conf']['pam_module'] 
+  package "libpam-dev"
+  configure_options += node['duo_unix']['pam_configure_options']
+end
 version = node['duo_unix']['version']
 remote_file "#{Chef::Config[:file_cache_path]}/duo_unix-#{version}.tar.gz" do
   source "#{node['duo_unix']['url']}#{version}.tar.gz"
