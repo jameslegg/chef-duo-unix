@@ -20,54 +20,57 @@ describe "SSH Daemon" do
     expect(service('ssh')).to be_running
   end
 
-  it "should enable ssh TCP forwarding" do
-    expect(file('/etc/ssh/sshd_config')).to contain('AllowTcpForwarding yes')
+  it "should disable ssh TCP forwarding" do
+    expect(file('/etc/ssh/sshd_config')).to contain('AllowTcpForwarding no')
   end
 
-  it "should enable ssh Tunnelling" do
-    expect(file('/etc/ssh/sshd_config')).to contain('PermitTunnel yes')
+  it "should disable ssh Tunnelling" do
+    expect(file('/etc/ssh/sshd_config')).to contain('PermitTunnel no')
   end
 
-  it "should not enable ForceCommand sshd option" do
-    expect(file('/etc/ssh/sshd_config')).not_to contain('ForceCommand')
+  it "should enable login_duo ForceCommand in sshd_config" do
+    expect(file('/etc/ssh/sshd_config')).to contain('ForceCommand /usr/sbin/login_duo')
   end
 end
 
 describe "Duo Unix install" do
-
   describe file('/etc/duo/login_duo.conf') do
     it { should be_file }
   end
 
-  describe file('/etc/duo/login_duo.conf') do
-    its(:content) { should match("group=duousers") }
+  describe file('/lib64/security/pam_duo.so') do
+    it { should be_file }
+  end
+
+  describe file('/lib64/security/pam_duo.la') do
+    it { should be_file }
   end
 
   describe file('/etc/duo/login_duo.conf') do
-    its(:content) { should match(/ikey=\w+/) }
+    its(:content) { should_not match(/group=\w+/) }
   end
 
   describe file('/etc/duo/login_duo.conf') do
-    its(:content) { should match(/ikey=\w+/) }
+    its(:content) { should match(/ikey=/) }
   end
 
   describe file('/etc/duo/login_duo.conf') do
-    its(:content) { should match(/host=api.\w+/) }
+    its(:content) { should match(/ikey=/) }
   end
 
   describe file('/etc/duo/login_duo.conf') do
-    its(:content) { should match("pushinfo=yes") }
+    its(:content) { should match(/host=/) }
   end
 
   describe file('/etc/duo/login_duo.conf') do
-    its(:content) { should match("autopush=yes") }
+    its(:content) { should match("pushinfo=no") }
   end
 
   describe file('/etc/duo/login_duo.conf') do
-    its(:content) { should match("group=duousers") }
+    its(:content) { should_not match("autopush=") }
   end
 
   describe file('/etc/duo/login_duo.conf') do
-    its(:content) { should match("failmode=secure") }
+    its(:content) { should match("failmode=safe") }
   end
 end

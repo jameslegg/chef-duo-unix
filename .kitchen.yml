@@ -14,6 +14,8 @@ busser:
 
 suites:
   - name: default
+    excludes:
+      - ubuntu-13.10
     run_list:
       - recipe[duo_unix::default]
     attributes:
