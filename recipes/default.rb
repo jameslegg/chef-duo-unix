@@ -19,21 +19,29 @@
 include_recipe 'openssh'
 include_recipe 'duo_unix::install'
 
-# Set up the config file
 directory "/etc/duo"
-template "/etc/duo/login_duo.conf" do
-  source "login_duo.conf.erb"
-  mode 0600
-  owner "sshd"
-  group "root"
-end
-
-# Enable login_duo for ssh
+# If using login_duo set up sshd and login_duo.conf
 if node['duo_unix']['conf']['login_duo_enabled']
-    node.override['openssh']['server']['force_command'] = '/usr/sbin/login_duo'
+  node.override['openssh']['server']['force_command'] = '/usr/sbin/login_duo'
+  template "/etc/duo/login_duo.conf" do
+    source "duo.conf.erb"
+    mode 0600
+    owner "sshd"
+    group "root"
+  end
+end
+# If using PAM setup pam config
+if node['duo_unix']['conf']['pam_enabled']
+  # If using PAM setup login due
+  template '/etc/duo/pam_duo.conf' do
+    source 'duo.conf.erb'
+    mode 0600
+    owner 'root'
+    group 'root'
+  end
 end
 
-# Set sshd_config variables by overrding openssh cookbook variables
+# Set sshd_config variables by overriding openssh cookbook variables
 if node['duo_unix']['conf']['PermitTunnel']
     node.override['openssh']['server']['permit_tunnel'] = 'yes'
 else

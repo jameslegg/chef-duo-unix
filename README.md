@@ -33,6 +33,30 @@ To force the recipe to build from source set:
 
 * `node['duo_unix']['from_source'] = true`
 
+To set up pam_duo set:
+* node['duo_unix']['conf']['pam_enable'] = true`
+If you wish to disable login_duo you must also set:
+* node['duo_unix']['conf']['login_duo_enable'] = false`
+
+PAM Note
+--------
+Because you might not want to use Duo Security PAN with ssh and because testing
+PAM configurations is complex this cookbook does not attempt to modify your
+system PAM settings or enable PAM in sshd_config. 
+
+For PAM authentication to function fully you should configure PAM and sshd in 
+your wrapper cookbook.
+
+Refer to the [PAM configuration](https://www.duosecurity.com/docs/duounix#pam-configuration) Duo Security Guide.
+Typically you will need add pam_duo to the relevant PAM configuration file like:
+`auth required pam_duo.so`
+
+To enable sshd to use PAM you can override the openssh cookbook variables.
+Set the following in your wrapper cookbook:
+* node.override['openssh']['server']['challenge_response_authentication'] = 'yes'
+* node.override['openssh']['server']['use_pam'] = 'yes'
+* node.override['openssh']['server']['use_dns'] = 'no'
+
 Usage
 =====
 
@@ -49,11 +73,6 @@ Complete the 'first steps' as described in the [Duo Unix documentation](https://
     	 }
  		}
 	 }
-
-TODO
-====
-* Support PAM configuration.
-* More testing.
 
 License and Author
 ==================

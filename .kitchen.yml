@@ -59,3 +59,5 @@ suites:
       duo_unix:
         conf:
           pam_module: true
+          login_duo_enabled: false
+          pam_enabled: true
