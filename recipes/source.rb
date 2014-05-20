@@ -9,7 +9,7 @@ when "debian", "ubuntu"
 	package "libssl-dev" do
 		action :upgrade
 	end
-	package "make" do
+	package "build-essential" do
 		action :upgrade
 	end
 end
@@ -34,5 +34,4 @@ bash "build-and-install-duo_unix" do
   # Only build when notified that a file has been re-downloaded
   action :nothing
 end
-
 
