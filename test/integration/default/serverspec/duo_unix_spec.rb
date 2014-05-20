@@ -32,7 +32,9 @@ describe "SSH Daemon" do
     expect(file('/etc/ssh/sshd_config')).to contain('ForceCommand /usr/sbin/login_duo')
   end
 
-  it "should install the duo_unix package" do
-    expect(package('duo-unix')).to be_installed
+  if os[:release] == '12.04' 
+    it "should install the duo_unix package" do
+      expect(package('duo-unix')).to be_installed
+    end
   end
 end
