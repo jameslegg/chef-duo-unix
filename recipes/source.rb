@@ -4,14 +4,13 @@
 #
 # Will install duo_security from source
 #
-case node[:platform]
+case node['platform']
 when "debian", "ubuntu"
-	package "libssl-dev" do
-		action :upgrade
-	end
-	package "build-essential" do
-		action :upgrade
-	end
+  %w{libssl-dev libpam-dev build-essential}.each do |pkg|
+	package pkg do
+		action :install
+    end
+  end
 end
 
 # Install duo_unix from source
