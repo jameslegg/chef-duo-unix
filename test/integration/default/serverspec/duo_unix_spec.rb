@@ -31,7 +31,6 @@ describe "SSH Daemon" do
   it "should enable login_duo ForceCommand in sshd_config" do
     expect(file('/etc/ssh/sshd_config')).to contain('ForceCommand /usr/sbin/login_duo')
   end
-end
 
   if os[:release] == '12.04'
     it "should install the duo_unix package" do
