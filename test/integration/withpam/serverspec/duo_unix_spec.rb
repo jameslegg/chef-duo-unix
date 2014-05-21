@@ -38,6 +38,14 @@ describe "Duo Unix install" do
     it { should be_file }
   end
 
+  describe file('/lib64/security/pam_duo.so') do
+    it { should be_file }
+  end
+
+  describe file('/lib64/security/pam_duo.la') do
+    it { should be_file }
+  end
+
   describe file('/etc/duo/login_duo.conf') do
     its(:content) { should_not match(/group=\w+/) }
   end

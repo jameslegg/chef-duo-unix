@@ -31,6 +31,9 @@ describe "SSH Daemon" do
   it "should not enable ForceCommand sshd option" do
     expect(file('/etc/ssh/sshd_config')).not_to contain('ForceCommand')
   end
+end
+
+describe "Duo Unix install" do
 
   if os[:release] == '12.04'
     it "should install the duo_unix package" do
@@ -38,4 +41,35 @@ describe "SSH Daemon" do
     end
   end
 
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("group=duousers") }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/ikey=\w+/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/ikey=\w+/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/host=api.\w+/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("pushinfo=yes") }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("autopush=yes") }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("group=duousers") }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match("failmode=secure") }
+  end
 end
