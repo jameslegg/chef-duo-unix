@@ -46,8 +46,10 @@ suites:
       duo_unix:
         from_source: true
   - name: withpam
+    # excluding distros where package not available
     excludes:
       - ubuntu-13.10
+      - ubuntu-14.04
     run_list:
       - recipe[duo_unix::default]
     attributes:

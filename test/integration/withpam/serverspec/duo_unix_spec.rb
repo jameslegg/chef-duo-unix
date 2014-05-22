@@ -38,11 +38,11 @@ describe "Duo Unix install" do
     it { should be_file }
   end
 
-  describe file('/lib64/security/pam_duo.so') do
+  describe file('/lib64/security/pam_duo.la') do
     it { should be_file }
   end
 
-  describe file('/lib64/security/pam_duo.la') do
+  describe file('/lib64/security/pam_duo.so') do
     it { should be_file }
   end
 
