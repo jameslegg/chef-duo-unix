@@ -1,41 +1,32 @@
 require 'serverspec'
 
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
+# Required by serverspec
+set :backend, :exec
 
-
-RSpec.configure do |c|
-  c.before :all do
-    c.path = '/sbin:/usr/sbin'
-  end
-end
-
-describe "SSH Daemon" do
-
-  it "is listening on port 22" do
+describe 'SSH Daemon' do
+  it 'is listening on port 22' do
     expect(port(22)).to be_listening
   end
 
-  it "has a running server of openssh" do
+  it 'has a running server of openssh' do
     expect(service('ssh')).to be_running
   end
 
-  it "should enable ssh TCP forwarding" do
+  it 'should enable ssh TCP forwarding' do
     expect(file('/etc/ssh/sshd_config')).to contain('AllowTcpForwarding yes')
   end
 
-  it "should enable ssh Tunnelling" do
+  it 'should enable ssh tunnelling' do
     expect(file('/etc/ssh/sshd_config')).to contain('PermitTunnel yes')
   end
 
-  it "should not enable ForceCommand sshd option" do
+  it 'should not enable ForceCommand sshd option' do
     expect(file('/etc/ssh/sshd_config')).not_to contain('ForceCommand')
   end
 
   if os[:release] == '12.04'
-    it "should install the duo_unix package" do
+    it 'should install the duo_unix package' do
       expect(package('duo-unix')).to be_installed
     end
   end
-
 end

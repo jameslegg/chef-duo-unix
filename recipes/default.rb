@@ -20,28 +20,28 @@ include_recipe 'openssh'
 include_recipe 'duo_unix::install'
 
 # Set up the config file
-directory "/etc/duo"
-template "/etc/duo/login_duo.conf" do
-  source "login_duo.conf.erb"
+directory '/etc/duo'
+template '/etc/duo/login_duo.conf' do
+  source 'login_duo.conf.erb'
   mode 0600
-  owner "sshd"
-  group "root"
+  owner 'sshd'
+  group 'root'
 end
 
 # Enable login_duo for ssh
 if node['duo_unix']['conf']['login_duo_enabled']
-    node.override['openssh']['server']['force_command'] = '/usr/sbin/login_duo'
+  node.override['openssh']['server']['force_command'] = '/usr/sbin/login_duo'
 end
 
 # Set sshd_config variables by overrding openssh cookbook variables
 if node['duo_unix']['conf']['PermitTunnel']
-    node.override['openssh']['server']['permit_tunnel'] = 'yes'
+  node.override['openssh']['server']['permit_tunnel'] = 'yes'
 else
-    node.override['openssh']['server']['permit_tunnel'] = 'no'
+  node.override['openssh']['server']['permit_tunnel'] = 'no'
 end
 
 if node['duo_unix']['conf']['AllowTCPForwarding']
-    node.override['openssh']['server']['allow_tcp_forwarding'] = 'yes'
+  node.override['openssh']['server']['allow_tcp_forwarding'] = 'yes'
 else
-    node.override['openssh']['server']['allow_tcp_forwarding'] = 'no'
+  node.override['openssh']['server']['allow_tcp_forwarding'] = 'no'
 end
