@@ -19,37 +19,36 @@
 include_recipe 'openssh'
 include_recipe 'duo_unix::install'
 
-directory "/etc/duo"
+directory '/etc/duo'
 # If using login_duo set up sshd and login_duo.conf
 if node['duo_unix']['conf']['login_duo_enabled']
   node.override['openssh']['server']['force_command'] = '/usr/sbin/login_duo'
-  template "/etc/duo/login_duo.conf" do
-    source "duo.conf.erb"
-    mode 0600
-    owner "sshd"
-    group "root"
-  end
-end
-# If using PAM setup pam config
-if node['duo_unix']['conf']['pam_enabled']
-  # If using PAM setup login due
-  template '/etc/duo/pam_duo.conf' do
+  template '/etc/duo/login_duo.conf' do
     source 'duo.conf.erb'
     mode 0600
-    owner 'root'
+    owner 'sshd'
     group 'root'
   end
 end
 
+# If using PAM setup pam config
+template '/etc/duo/pam_duo.conf' do
+  source 'duo.conf.erb'
+  mode 0600
+  owner 'root'
+  group 'root'
+  only_if { node['duo_unix']['conf']['pam_enabled'] }
+end
+
 # Set sshd_config variables by overriding openssh cookbook variables
 if node['duo_unix']['conf']['PermitTunnel']
-    node.override['openssh']['server']['permit_tunnel'] = 'yes'
+  node.override['openssh']['server']['permit_tunnel'] = 'yes'
 else
-    node.override['openssh']['server']['permit_tunnel'] = 'no'
+  node.override['openssh']['server']['permit_tunnel'] = 'no'
 end
 
 if node['duo_unix']['conf']['AllowTCPForwarding']
-    node.override['openssh']['server']['allow_tcp_forwarding'] = 'yes'
+  node.override['openssh']['server']['allow_tcp_forwarding'] = 'yes'
 else
-    node.override['openssh']['server']['allow_tcp_forwarding'] = 'no'
+  node.override['openssh']['server']['allow_tcp_forwarding'] = 'no'
 end

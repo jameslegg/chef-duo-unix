@@ -1,0 +1,16 @@
+Encoding:
+  Enabled: false
+
+HashSyntax:
+  Enabled: false
+
+Style/SingleSpaceBeforeFirstArg:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - 'bin/**/*'
+    - 'vendor/**/*'
