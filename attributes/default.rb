@@ -12,7 +12,8 @@ default['duo_unix']['ubuntu']['precise']['repo_gpg'] = \
 default['duo_unix']['from_source'] = false
 default['duo_unix']['url'] = 'https://dl.duosecurity.com/duo_unix-'
 default['duo_unix']['version']  = '1.9.7'
-default['duo_unix']['checksum'] = '8fc90eed4924cf23a8e1ea275be81f345932954a'
+default['duo_unix']['checksum'] = \
+  'f200ea5accf3eafce66568ecb6f9f99634e84fac987bc06df11bd21e6dea1324'
 default['duo_unix']['configure_options'] = %w(--prefix=/usr)
 
 # duo_unix configuration options
