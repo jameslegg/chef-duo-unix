@@ -1,15 +1,22 @@
 ---
 driver:
-  name: vagrant
+  name: docker
+  binary: /usr/bin/docker
+  forward_agent: true
+  require_chef_omnibus: true
+  disable_upstart: false
+  provision_command:
+    - apt-get update
+    - chown root:root /usr/bin/sudo
+    - chmod 4755 /usr/bin/sudo
+  use_cache: false
+  remove_images: true
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
-  - name: ubuntu-12.04
-    run_list: apt::default
   - name: ubuntu-14.04
-    run_list: apt::default
 
 suites:
   - name: default
@@ -31,3 +38,6 @@ suites:
     attributes:
       duo_unix:
         from_source: true
+  - name: jenkins
+    run_list:
+      - recipe[duo_unix::default]

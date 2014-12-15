@@ -1,0 +1,8 @@
+.kitchen/
+cookbooks/
+.vagrant/
+.kitchen.local.yml
+bin/
+.bundle/
+vendor/
+bin/
