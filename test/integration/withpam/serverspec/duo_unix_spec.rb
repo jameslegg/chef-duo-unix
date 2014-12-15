@@ -8,11 +8,15 @@ describe 'SSH Daemon' do
     expect(port(22)).to be_listening
   end
 
+  it 'has a running server of openssh' do
+    expect(service('ssh')).to be_running
+  end
+
   it 'should disable ssh TCP forwarding' do
     expect(file('/etc/ssh/sshd_config')).to contain('AllowTcpForwarding no')
   end
 
-  it 'should disable ssh Tunnelling' do
+  it 'should disable ssh tunnelling' do
     expect(file('/etc/ssh/sshd_config')).to contain('PermitTunnel no')
   end
 
@@ -21,8 +25,18 @@ describe 'SSH Daemon' do
       'ForceCommand /usr/sbin/login_duo'
     )
   end
+end
 
+describe 'Duo Unix install' do
   describe file('/etc/duo/login_duo.conf') do
+    it { should be_file }
+  end
+
+  describe file('/lib64/security/pam_duo.la') do
+    it { should be_file }
+  end
+
+  describe file('/lib64/security/pam_duo.so') do
     it { should be_file }
   end
 

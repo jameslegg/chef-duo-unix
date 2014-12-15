@@ -30,3 +30,37 @@ describe 'SSH Daemon' do
     expect(file('/usr/sbin/login_duo')).to be_file
   end
 end
+
+describe 'Duo Unix install' do
+  describe file('/etc/duo/login_duo.conf') do
+    it { should be_file }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should_not match(/group=\w+/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/ikey=/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/ikey=/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/host=/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match('pushinfo=no') }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should_not match('autopush=') }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match('failmode=safe') }
+  end
+end

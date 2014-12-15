@@ -23,10 +23,18 @@ describe 'SSH Daemon' do
   it 'should not enable ForceCommand sshd option' do
     expect(file('/etc/ssh/sshd_config')).not_to contain('ForceCommand')
   end
+end
 
-  if os[:release] == '12.04'
-    it 'should install the duo_unix package' do
-      expect(package('duo-unix')).to be_installed
-    end
+describe 'Duo Unix install' do
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/ikey/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match(/host/) }
+  end
+
+  describe file('/etc/duo/login_duo.conf') do
+    its(:content) { should match('pushinfo') }
   end
 end

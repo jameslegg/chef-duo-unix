@@ -22,7 +22,6 @@ else
 
       package 'duo-unix'
     else
-      # If no supported pacakge for this relase install from source
       include_recipe 'duo_unix::source'
     end
   else

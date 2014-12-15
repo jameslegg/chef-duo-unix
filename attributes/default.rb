@@ -15,12 +15,17 @@ default['duo_unix']['version']  = '1.9.7'
 default['duo_unix']['checksum'] = \
   'f200ea5accf3eafce66568ecb6f9f99634e84fac987bc06df11bd21e6dea1324'
 default['duo_unix']['configure_options'] = %w(--prefix=/usr)
+default['duo_unix']['pam_configure_options'] = ' --with-pam=/lib/security'
+
+# If you want to use the PAM module
+default['duo_unix']['conf']['pam_module'] = false
 
 # duo_unix configuration options
 default['duo_unix']['conf']['integration_key'] = ''
 default['duo_unix']['conf']['secret_key'] = ''
 default['duo_unix']['conf']['api_hostname'] = ''
 default['duo_unix']['conf']['pushinfo'] = 'no'
+default['duo_unix']['conf']['autopush'] = false
 default['duo_unix']['conf']['group'] = ''
 default['duo_unix']['conf']['failmode'] = 'safe'
 default['duo_unix']['conf']['PermitTunnel'] = false
