@@ -30,15 +30,14 @@ if node['duo_unix']['conf']['login_duo_enabled']
     group 'root'
   end
 end
+
 # If using PAM setup pam config
-if node['duo_unix']['conf']['pam_enabled']
-  # If using PAM setup login due
-  template '/etc/duo/pam_duo.conf' do
-    source 'duo.conf.erb'
-    mode 0600
-    owner 'root'
-    group 'root'
-  end
+template '/etc/duo/pam_duo.conf' do
+  source 'duo.conf.erb'
+  mode 0600
+  owner 'root'
+  group 'root'
+  only_if { node['duo_unix']['conf']['pam_enabled'] }
 end
 
 # Set sshd_config variables by overriding openssh cookbook variables
