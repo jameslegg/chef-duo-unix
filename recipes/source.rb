@@ -4,7 +4,7 @@
 #
 # Will install duo_security from source
 #
-case node[:platform]
+case node['platform']
 when "debian", "ubuntu"
 	package "libssl-dev" do
 		action :upgrade
@@ -34,4 +34,3 @@ bash "build-and-install-duo_unix" do
   # Only build when notified that a file has been re-downloaded
   action :nothing
 end
-
